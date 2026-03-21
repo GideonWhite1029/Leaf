@@ -93,7 +93,7 @@ index bd1b5ec838aa04c482d4bf186dd92214dadce4f0..2a21f7292db4068769e1b2c94d3fd0f3
      public void absSnapTo(double x, double y, double z, float yRot, float xRot) {
          this.absSnapTo(x, y, z);
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index ea650889f7ab3bb805c56ad5057236ab76feff39..812130784fcd9b994204fd422ccfaed93546d375 100644
+index ea650889f7ab3bb805c56ad5057236ab76feff39..aa3ee3991763a75950ddeaafe2f8d988ea700a85 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
 @@ -471,7 +471,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
@@ -101,7 +101,27 @@ index ea650889f7ab3bb805c56ad5057236ab76feff39..812130784fcd9b994204fd422ccfaed9
  
              if (this.isEyeInWater() // Leaf - Optimize isEyeInFluid
 -                && !serverLevel1.getBlockState(BlockPos.containing(this.getX(), this.getEyeY(), this.getZ())).is(Blocks.BUBBLE_COLUMN)) {
-+                && !serverLevel1.getBlockState(new BlockPos(this.blockPosition.getX(), Mth.floor(this.getEyeY()), this.blockPosition.getZ())).is(Blocks.BUBBLE_COLUMN)) { // Leaf - optimize eye block position
++                && !isEyeInBubbleColumn(serverLevel1)) { // Leaf - optimize eye block position
                  boolean flag1 = !this.canBreatheUnderwater()
                      && !MobEffectUtil.hasWaterBreathing(this)
                      && (!flag || !((Player)this).getAbilities().invulnerable);
+@@ -539,6 +539,19 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+         profilerFiller.pop();
+     }
+ 
++    // Leaf start - optimize eye block position
++    private boolean isEyeInBubbleColumn(ServerLevel world) {
++        int x = this.blockPosition.getX();
++        int z = this.blockPosition.getZ();
++        int y = Mth.floor(this.getEyeY());
++        BlockState blockState = world.getBlockStateIfLoadedUnchecked(x, y, z);
++        if (blockState == null) {
++            blockState = world.getBlockState(new BlockPos(x, y, z));
++        }
++        return blockState.is(Blocks.BUBBLE_COLUMN);
++    }
++    // Leaf end - optimize eye block position
++
+     protected boolean shouldTakeDrowningDamage() {
+         return this.getAirSupply() <= -this.level().purpurConfig.drowningDamageInterval; // Purpur - Drowning Settings
+     }

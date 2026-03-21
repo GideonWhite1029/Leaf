@@ -1127,10 +1127,10 @@ index e8e713b4e62e0afd82f447b9dc53ec54489cc71e..2e7c404e3808c39c0835e1e39fd238af
          return true;
      }
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index b07d6ce323a676447bfce932413bc38db0cb643b..3b3a801e632bf65b9bef5833755b2de3be1b059a 100644
+index 1d794c0df010b8c052c28fb9ba2b374bfbd0377e..9f16484cf90b689c5d9ae0ac66427c960937fe14 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -3024,6 +3024,12 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -3037,6 +3037,12 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          return this.equipment.get(slot);
      }
  

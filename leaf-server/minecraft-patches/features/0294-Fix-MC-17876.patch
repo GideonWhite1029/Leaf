@@ -10,10 +10,10 @@ Temporarily bypass the max health check during entity creation, as equipment att
 Co-authored-by: Bjarne Koll <git@lynxplay.dev>
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 3b3a801e632bf65b9bef5833755b2de3be1b059a..ec39f3cd20bec29cc0aeaf58e0d72bfe1cabe774 100644
+index 9f16484cf90b689c5d9ae0ac66427c960937fe14..45bde38b25244deb259d6f0771268170c59cd0c5 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -901,7 +901,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -914,7 +914,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(maxHealth);
          });
          // CraftBukkit end
@@ -22,7 +22,7 @@ index 3b3a801e632bf65b9bef5833755b2de3be1b059a..ec39f3cd20bec29cc0aeaf58e0d72bfe
          this.hurtTime = input.getShortOr("HurtTime", (short)0);
          this.deathTime = input.getShortOr("DeathTime", (short)0);
          this.lastHurtByMobTimestamp = input.getIntOr("HurtByTimestamp", 0);
-@@ -1442,7 +1442,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -1455,7 +1455,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          return this.entityData.get(DATA_HEALTH_ID);
      }
  
@@ -31,7 +31,7 @@ index 3b3a801e632bf65b9bef5833755b2de3be1b059a..ec39f3cd20bec29cc0aeaf58e0d72bfe
          // Paper start - Check for NaN
          if (Float.isNaN(health)) { health = getMaxHealth(); if (this.valid) {
              System.err.println("[NAN-HEALTH] " + getScoreboardName() + " had NaN health set");
-@@ -1453,7 +1453,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -1466,7 +1466,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              // Squeeze
              if (health < 0.0F) {
                  player.setRealHealth(0.0D);
@@ -40,7 +40,7 @@ index 3b3a801e632bf65b9bef5833755b2de3be1b059a..ec39f3cd20bec29cc0aeaf58e0d72bfe
                  player.setRealHealth(player.getMaxHealth());
              } else {
                  player.setRealHealth(health);
-@@ -1464,8 +1464,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -1477,8 +1477,21 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
              return;
          }
          // CraftBukkit end
